@@ -11,7 +11,7 @@ Given its global impact and contribution to high mortality rates, there is an ur
 
 Recently, we applied image-based profiling with the [CellPainting](https://www.nature.com/articles/nprot.2016.105)(CP) assay to investigate whether single-cell image-based profiles could be leveraged to identify failing heart cells (cardiac fibrosis), healthy heart cells, and heart cells treated with `drug_x`.
 Our study demonstrated that by using image-based profiles with machine learning models, we could accurately distinguish between single cells derived from either heart failure or non-heart failure patients.
-Additionally, we identified morphological features that were critical for the model’s ability to differentiate between cell states.
+Additionally, we identified morphological features that were critical for the model’s ability to differentiate between heart states.
 These findings suggest that specific cellular structures are strong indicators of heart cell health or failure.
 The processing methods and results of this analysis can be accessed [here](https://github.com/WayScience/cellpainting_predicts_cardiac_fibrosis).
 
