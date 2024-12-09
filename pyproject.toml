@@ -9,6 +9,7 @@ readme = "README.md"
 python = "^3.11"
 copairs = "^0.4.2"
 ipykernel = "^6.29.5"
+seaborn = "^0.13.2"
 
 
 [tool.poetry.group.dev.dependencies]
