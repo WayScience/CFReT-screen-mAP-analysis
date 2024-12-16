@@ -21,10 +21,6 @@ repos:
         name: nbQA-Ruff
         args: ["--fix"]
         additional_dependencies: ["ruff"]
-    -   id: nbqa-isort
-        name: nbQA-Isort
-        args: ["--profile", "black"]
-        additional_dependencies: ["isort"]
 
   # format toml files
 -   repo: https://github.com/pappasam/toml-sort
