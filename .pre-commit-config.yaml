@@ -27,7 +27,7 @@ repos:
     rev: v0.24.2
     hooks:
     -   id: toml-sort
-
+        args: ["--in-place"]
   # Sort imports with isort (if separate from Ruff)
 -   repo: https://github.com/pre-commit/mirrors-isort
     rev: v5.10.1
