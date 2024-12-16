@@ -80,7 +80,7 @@ def load_barcodes(barcode_path: str | pathlib.Path) -> dict:
         batch_id = f"batch_{idx}"
 
         # Collect plate barcodes for the current platemap
-        batch_content = {platemap_name: df["plate_barcode"]}
+        batch_content = {platemap_name: df["plate_barcode"].values.tolist()}
 
         # Store the batch content in the main dictionary
         barcode_contents[batch_id] = batch_content
