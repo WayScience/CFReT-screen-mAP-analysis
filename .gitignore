@@ -175,3 +175,9 @@ notebooks/data/*.parquet
 
 # ignore data file
 data/
+
+# ignore results files that are not used to generate figures
+notebooks/1.preprocessing-features/results
+
+# ignore prototyping files
+_*
