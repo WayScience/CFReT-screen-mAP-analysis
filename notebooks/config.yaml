@@ -29,7 +29,7 @@ copairs_ap_configs:
   #
   # pos_sameby (list[str]): Using metadata to identify profiles that belong to the same
   # group, that is not the control group (e.g if using some sort of sample id, profiles
-  # that have the same sample ID are considered as postivie pairs that have the same
+  # that have the same sample ID are considered as positive pairs that have the same
   # positive ID)
   #
   # pos_diffby (list[str]): Metadata columns used to differentiate positive pairs. If
@@ -51,9 +51,9 @@ copairs_ap_configs:
   # include "cosine". Other options can be found here:
   # https://github.com/cytomining/copairs/blob/main/src/copairs/compute.py
   #
-  pos_sameby: ["Metadata_broad_sample"]
+  pos_sameby: ["Metadata_treatment"]
   pos_diffby: []
   neg_sameby: []
-  neg_diffby: ["Metadata_broad_sample", "Metadata_treatment_index"]
+  neg_diffby: ["Metadata_treatment", "Metadata_treatment"]
   batch_size: 20000
   distance: cosine
