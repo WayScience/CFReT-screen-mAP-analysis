@@ -10,14 +10,17 @@ import pandas as pd
 import yaml
 
 
-def load_config(fpath: str | pathlib.Path) -> dict:
+def load_config(
+    fpath: str | pathlib.Path, specific: None | str | None = None
+) -> dict:
     """Loads in configuration file if specified path
 
     Parameters
     ----------
     fpath : str | pathlib.Path
         path pointing to config file
-
+    specific : Optional[None | str]
+        looks for a specific config instead of loading it all
     Returns
     -------
     dict
@@ -35,7 +38,11 @@ def load_config(fpath: str | pathlib.Path) -> dict:
 
     # next is to load the yaml file
     with open(fpath) as content:
-        return yaml.safe_load(content)
+        content = yaml.safe_load(content)
+        if specific is not None:
+            return content[specific]
+        else:
+            return content
 
 
 def load_barcodes(barcode_path: str | pathlib.Path) -> dict:
@@ -86,6 +93,7 @@ def load_barcodes(barcode_path: str | pathlib.Path) -> dict:
         barcode_contents[batch_id] = batch_content
 
     return barcode_contents
+
 
 def batch_load_profiles(path_to_data_dir: str | pathlib.Path, barcodes: dict) -> dict:
     """Load profile data from a given directory based on batch and platemap structure.
