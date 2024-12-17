@@ -21,17 +21,13 @@ repos:
         name: nbQA-Ruff
         args: ["--fix"]
         additional_dependencies: ["ruff"]
-    -   id: nbqa-isort
-        name: nbQA-Isort
-        args: ["--profile", "black"]
-        additional_dependencies: ["isort"]
 
   # format toml files
 -   repo: https://github.com/pappasam/toml-sort
     rev: v0.24.2
     hooks:
     -   id: toml-sort
-
+        args: ["--in-place"]
   # Sort imports with isort (if separate from Ruff)
 -   repo: https://github.com/pre-commit/mirrors-isort
     rev: v5.10.1
@@ -41,7 +37,7 @@ repos:
 
   # Pyupgrade for updating Python syntax
 -   repo: https://github.com/asottile/pyupgrade
-    rev: v3.19.0
+    rev: v3.19.1
     hooks:
     -   id: pyupgrade
         args: ["--py311-plus"]
