@@ -21,6 +21,7 @@ def load_config(
         path pointing to config file
     specific : Optional[None | str]
         looks for a specific config instead of loading it all
+        default is None
     Returns
     -------
     dict
