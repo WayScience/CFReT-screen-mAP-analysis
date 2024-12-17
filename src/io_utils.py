@@ -86,3 +86,50 @@ def load_barcodes(barcode_path: str | pathlib.Path) -> dict:
         barcode_contents[batch_id] = batch_content
 
     return barcode_contents
+
+def batch_load_profiles(path_to_data_dir: str | pathlib.Path, barcodes: dict) -> dict:
+    """Load profile data from a given directory based on batch and platemap structure.
+
+    Parameters
+    ----------
+    path_to_data_dir : str | pathlib.Path
+        Path to the directory containing the profile files.
+    barcodes : dict
+        Dictionary containing batch information where:
+        - Keys: Batch IDs
+        - Values: Dictionaries mapping platemap IDs to lists of plate names.
+
+    Returns
+    -------
+    dict
+        A nested dictionary where:
+        - Keys: Batch IDs
+        - Values: Dictionaries mapping platemap IDs to lists of loaded DataFrames.
+    """
+    path_to_data_dir = pathlib.Path(path_to_data_dir)  # Ensure path is a pathlib.Path
+    loaded_profiles = {}  # Final dictionary to store loaded profiles
+
+    for batch_id, batch_contents in barcodes.items():
+        platemap_profiles = {}  # Profiles grouped by platemap ID
+
+        for platemap_id, plate_list in batch_contents.items():
+            profiles_for_platemap = []  # List to store DataFrames for this platemap
+
+            for plate_name in plate_list:
+                # Construct file path and load the profile
+                profile_path = path_to_data_dir / f"{plate_name}_cleaned.parquet"
+                try:
+                    profile_df = pd.read_parquet(profile_path.resolve(strict=True))
+                    profiles_for_platemap.append(profile_df)
+                except FileNotFoundError:
+                    print(f"Warning: File not found - {profile_path}")
+                except Exception as e:
+                    print(f"Error loading file {profile_path}: {e}")
+
+            # Store profiles under the current platemap ID
+            platemap_profiles[platemap_id] = profiles_for_platemap
+
+        # Store all platemap profiles under the current batch ID
+        loaded_profiles[batch_id] = platemap_profiles
+
+    return loaded_profiles
