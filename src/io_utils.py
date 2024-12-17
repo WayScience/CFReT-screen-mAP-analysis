@@ -76,7 +76,7 @@ def load_barcodes(barcode_path: str | pathlib.Path) -> dict:
     for idx, (platemap_name, df) in enumerate(
         barcodes.groupby("platemap_file"), start=1
     ):
-        # Generate a batch ID
+        # Generate a batch ID and plate ID
         batch_id = f"batch_{idx}"
 
         # Collect plate barcodes for the current platemap
