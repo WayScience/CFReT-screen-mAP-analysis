@@ -62,8 +62,10 @@ results_platemap_dir = (results_dir / "platemaps_w_moa").resolve()
 results_platemap_dir.mkdir(exist_ok=True)
 
 # making a results dir for aggregatd profiles
-results_agg_profiles_dir = (results_dir / "aggregated_profiles").resolve()
-results_agg_profiles_dir.mkdir(exist_ok=True)
+results_moa_agg_profiles_dir = (results_dir / "aggregated_profiles/moa_agg").resolve()
+results_repl_agg_profiles_dir = (results_dir / "aggregated_profiles/repl_agg").resolve()
+results_moa_agg_profiles_dir.mkdir(exist_ok=True, parents=True)
+results_repl_agg_profiles_dir.mkdir(exist_ok=True, parents=True)
 
 # updated barcode out path# Save the updated barcode metadata to a CSV file
 updated_barcode_path = (
@@ -173,20 +175,24 @@ concat_batch_profiles = data_utils.concat_batch_profiles(annotated_profiles)
 
 
 for batch_id, batch_profile in concat_batch_profiles.items():
-    # generating compound replicate profiles (since the compound replicates is at the plate level)
+    # Generate aggregate profiles at the replicate level
+    # Group by 'Metadata_plate_id' (plate ID) and 'Metadata_treatment' (treatment/compound)
     replicate_agg_df = aggregate(
         batch_profile, strata=["Metadata_plate_id", "Metadata_treatment"]
     )
 
-    # generating aggreate profile for only the MOA
+    # Generate aggregate profiles at the Mechanism of Action (MOA) level
+    # Group by 'Metadata_plate_id' (plate ID) and 'Metadata_Pathway' (MOA annotation)
     moa_agg_df = aggregate(
         batch_profile, strata=["Metadata_plate_id", "Metadata_Pathway"]
     )
 
-    # saving both into the result
+    # Save the replicate-level aggregate profiles as a parquet file
     replicate_agg_df.to_parquet(
-        results_agg_profiles_dir / f"{batch_id}_repl_aggregate_profiles.parquet"
+        results_repl_agg_profiles_dir / f"{batch_id}_repl_aggregate_profiles.parquet"
     )
+
+    # Save the MOA-level aggregate profiles as a parquet file
     moa_agg_df.to_parquet(
-        results_agg_profiles_dir / f"{batch_id}_moa_aggregate_profiles.parquet"
+        results_moa_agg_profiles_dir / f"{batch_id}_moa_aggregate_profiles.parquet"
     )
