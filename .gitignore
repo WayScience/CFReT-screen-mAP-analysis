@@ -175,3 +175,7 @@ cython_debug/
 
 # ignore data file
 notebooks/data/
+
+# ignoring results folder from each module
+notebooks/0.download-data/results
+notebooks/1.preprocessing-features/results
