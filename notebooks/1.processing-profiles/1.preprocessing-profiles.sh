@@ -10,4 +10,4 @@ conda activate cfret-map
 jupyter nbconvert --to python --output-dir=nbconverted/ *.ipynb
 
 # run the scripts
-python nbconverted/1.preprocessing-features.py
+python nbconverted/1.preprocessing-profiles.py
