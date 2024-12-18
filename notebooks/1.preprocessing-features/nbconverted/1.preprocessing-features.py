@@ -61,7 +61,7 @@ results_dir.mkdir(exist_ok=True)
 results_platemap_dir = (results_dir / "platemaps_w_moa").resolve()
 results_platemap_dir.mkdir(exist_ok=True)
 
-# making a results dir for aggregatd profiles
+# making a results dir for aggregate profiles
 results_moa_agg_profiles_dir = (results_dir / "aggregated_profiles/moa_agg").resolve()
 results_repl_agg_profiles_dir = (results_dir / "aggregated_profiles/repl_agg").resolve()
 results_moa_agg_profiles_dir.mkdir(exist_ok=True, parents=True)

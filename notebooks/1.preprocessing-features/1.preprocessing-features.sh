@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# This script updates the plate maps with MOA (Mechanism of Action) information and generates
+# aggregate profiles at both the MOA level and the replicate level.
+
 # activate conda env
 conda activate cfret-map
 
