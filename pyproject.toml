@@ -9,7 +9,7 @@ description = "Analysis notebooks applying mean average Precision (mAP) to the C
 authors = ["axiomcura <erikishere3@gmail.com>"]
 readme = "README.md"
 packages = [
-  {include = "src"} # including analysis module
+  {include = "src"}
 ]
 
 [tool.poetry.dependencies]

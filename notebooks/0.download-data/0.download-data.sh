@@ -1,10 +1,13 @@
 #!/bin/bash
 
-# activate conda env
+# Shell script to download data required for this analysis notebook
+
+# Activate the conda environment
 conda activate cfret-map
 
-# convert notebooks into python scripts
+# Convert all Jupyter notebooks in the current directory to Python scripts
+# and save them in the 'nbconverted/' directory
 jupyter nbconvert --to python --output-dir=nbconverted/ *.ipynb
 
-# run the scripts
+# Execute the data download script
 python nbconverted/0.download-data.py

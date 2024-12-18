@@ -171,7 +171,7 @@ cython_debug/
 .vscode
 
 # removed large data files
-notebooks/data/*.parquet
+*.parquet
 
 # ignore data file
-data/
+notebooks/data/
