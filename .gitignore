@@ -178,4 +178,4 @@ notebooks/data/
 
 # ignoring results folder from each module
 notebooks/0.download-data/results
-notebooks/1.preprocessing-features/results
+notebooks/1.processing-profiles/results
