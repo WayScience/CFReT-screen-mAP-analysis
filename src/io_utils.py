@@ -1,4 +1,4 @@
-"""io_utils.py
+"""
 
 This module will contain functions pertaining to loading and writing files.
 """
