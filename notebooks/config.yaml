@@ -1,4 +1,4 @@
-general_configs: &general_configs
+general_configs:
   # General configurations for this project
 
   # seed (int): Seed value for ensuring reproducibility in analyses that involve random
