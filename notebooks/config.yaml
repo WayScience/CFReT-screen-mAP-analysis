@@ -1,16 +1,20 @@
-# General configurations for this project:
-# seed (int): Seed value for ensuring reproducibility in analyses that involve random operations
 general_configs: &general_configs
+  # General configurations for this project
+
+  # seed (int): Seed value for ensuring reproducibility in analyses that involve random
+  # operations
   seed: 0
 
-# Data download configurations:
-# download_chunk_size (int): The size (in KB) of data chunks to download at a time for
-# optimized performance
-#
-# github_metadata_url (str): The URL of the dataset source. In this case, the file being
-# downloaded is a zip archive, as the source contains a directory.
 download_configs:
+  # Parameters for downloading the screen data from:
+  # https://github.com/WayScience/targeted_fibrosis_drug_screen
+
+  # download_chunk_size (int): The size (in KB) of data chunks to download at a time for
+  # optimized performance
   download_chunk_size: 128
+
+  # github_metadata_url (str): The URL of the dataset source. In this case, the file being
+  # downloaded is a zip archive, as the source contains a directory.
   github_metadata_url: https://github.com/WayScience/targeted_fibrosis_drug_screen/archive/refs/heads/main.zip
 
 copairs_ap_configs:
@@ -34,7 +38,7 @@ copairs_ap_configs:
 
   # batch_size (int): The batch size for processing similarity computations Larger
   # values use more memory but process faster.
-  batch_size: 20000
+  batch_size: 10000
 
   # distance (str): The distance metric used for similarity computations. Common options
   # include "cosine". Other options can be found here:
