@@ -152,7 +152,7 @@ for batch_index, (platemap_filename, associated_plates_df) in enumerate(
     loaded_plate_batches[batch_id] = combined_aggregated_data
 
 
-# In this section, we analyze a high-content screening dataset generated from cell painting experiments, where failing cardiac fibroblasts are treated with multiple compounds. Our goal is to calculate the mean average precision (mAP) by comparing the experimental treatments to two controls: a negative control consisting of DMSO-treated failing cardiac fibroblasts and a positive control consisting of DMSO-treated healthy cardiac fibroblasts.
+# In this section, we analyze a high-content screening dataset generated from Cell Painting experiments, where failing cardiac fibroblasts are treated with multiple compounds. Our goal is to calculate the mean average precision (mAP) by comparing the experimental treatments to two controls: a negative control of DMSO-treated failing cardiac fibroblasts and a positive control of DMSO-treated healthy cardiac fibroblasts.
 #
 # We start by preparing the dataset, copying the profiles, and assigning a reference index to ensure proper grouping of non-DMSO treatment replicates. Metadata and feature columns are separated to facilitate the calculation of average precision (AP) scores. To calculate these scores, we define positive pairs as treatments with the same metadata values (e.g., same treatment type) across all plates. Negative pairs, on the other hand, are determined by comparing all DMSO-treated wells across all plates with all other treatments.
 #
