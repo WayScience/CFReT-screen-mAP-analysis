@@ -22,7 +22,7 @@ copairs_ap_configs:
   # (Average Precision)
 
   # pos_sameby (list[str]): Using metadata to identify profiles that belong to the same
-  # group, that is not the control group (e.g if using some sort of sample id, profiles
+  # group, that is not the control group (e.g if using some sort of sample id, profiles)
   pos_sameby: ["Metadata_treatment"]
 
   # pos_diffby (list[str]): Metadata columns used to differentiate positive pairs.
