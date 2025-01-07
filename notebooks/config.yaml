@@ -37,7 +37,7 @@ copairs_ap_configs:
 
 
   # batch_size (int): The batch size for processing similarity computations
-  # values use more memory but process faster.
+  # Larger values use more memory but process faster.
   batch_size: 10000
 
   # distance (str): The distance metric used for similarity computations. Common options
