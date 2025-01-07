@@ -36,7 +36,7 @@ copairs_ap_configs:
   neg_diffby: ["Metadata_treatment", "Metadata_reference_index"]
 
 
-  # batch_size (int): The batch size for processing similarity computations Larger
+  # batch_size (int): The batch size for processing similarity computations
   # values use more memory but process faster.
   batch_size: 10000
 
