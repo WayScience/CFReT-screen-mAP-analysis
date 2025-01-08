@@ -1,5 +1,28 @@
 #!/usr/bin/env python
 
+# # 1. Executing Mean Average Precision (mAP)
+#
+# Mean Average Precision (mAP) is a flexible statistical framework used to measure the **phenotypic activity** of compounds by comparing them to control groups. In this notebook, we utilize high-content screening data, that used the CellPainting assay, to identify potential drug candidates that demonstrate evidence of reversing the effects of cardiac fibrosis. The dataset comprises **image-based profiles at the replicate level (well-level)**.
+#
+# #### **Controls Used in the Screen**
+# To interpret mAP scores, we leverage the following control groups:
+# - **Negative control**: Failing CF cells treated with DMSO.
+# - **Positive control**: Healthy CF cells treated with DMSO.
+#
+# #### **Interpreting mAP Scores**
+# - **High mAP Scores**:
+#   Indicate that wells treated with a specific compound are highly phenotypically distinct compared to the control. This suggests the compound induces a strong and specific phenotypic change.
+#
+# - **Low mAP Scores**:
+#   Indicate that wells treated with a specific compound are phenotypically similar to the control. This suggests the compound has little to no phenotypic effect or a nonspecific one.
+#
+# #### **Biological Interpretation**
+# mAP scores help determine which compounds exhibit phenotypic changes that resemble those of healthy cells, making them potential candidates for reversing the effects of cardiac fibrosis. By comparing the phenotypic activity of compounds to both positive and negative controls, we can prioritize compounds for further validation.
+#
+# **what is outputed**
+# - AP scores generated using both the postive and negvative controls
+# - mAP scores generated using both the postive and negative controls
+
 # In[1]:
 
 
@@ -152,7 +175,7 @@ for batch_index, (platemap_filename, associated_plates_df) in enumerate(
     loaded_plate_batches[batch_id] = combined_aggregated_data
 
 
-# In this section, we analyze a high-content screening dataset generated from Cell Painting experiments, where failing cardiac fibroblasts are treated with multiple compounds. Our goal is to calculate the mean average precision (mAP) by comparing the experimental treatments to two controls: a negative control of DMSO-treated failing cardiac fibroblasts and a positive control of DMSO-treated healthy cardiac fibroblasts.
+# In this section, we analyze a high-content screening dataset generated from cell painting experiments, where failing cardiac fibroblasts are treated with multiple compounds. Our goal is to calculate the mean average precision (mAP) by comparing the experimental treatments to two controls: a negative control consisting of DMSO-treated failing cardiac fibroblasts and a positive control consisting of DMSO-treated healthy cardiac fibroblasts.
 #
 # We start by preparing the dataset, copying the profiles, and assigning a reference index to ensure proper grouping of non-DMSO treatment replicates. Metadata and feature columns are separated to facilitate the calculation of average precision (AP) scores. To calculate these scores, we define positive pairs as treatments with the same metadata values (e.g., same treatment type) across all plates. Negative pairs, on the other hand, are determined by comparing all DMSO-treated wells across all plates with all other treatments.
 #
