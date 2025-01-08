@@ -32,7 +32,6 @@ import warnings
 
 import pandas as pd
 from copairs import map
-from pycytominer import annotate
 from pycytominer.cyto_utils import load_profiles
 from tqdm import TqdmWarning
 
@@ -106,7 +105,7 @@ for aggregated_profile in list(data_dir.glob("*.parquet")):
 
 
 # Suffix for aggregated profiles
-aggregated_file_suffix = "aggregated.parquet"
+aggregated_file_suffix = "aggregated_post_fs.parquet"
 
 # Dictionary to store loaded plate data grouped by batch
 loaded_plate_batches = {}
@@ -137,39 +136,18 @@ for batch_index, (platemap_filename, associated_plates_df) in enumerate(
         # Load the aggregated profile data for the current plate
         aggregated_data = load_profiles(plate_file_path)
 
-        # Create a new metadata column called 'Metadata_well' by concatenating well row and column
-        # Zero-pad single-digit well column numbers for consistency (e.g., "B2" -> "B02")
-        aggregated_data["Metadata_well"] = aggregated_data["Metadata_WellRow"].astype(
-            str
-        ) + aggregated_data["Metadata_WellCol"].astype(int).apply(lambda x: f"{x:02}")
-
-        # Reorder columns to place 'Metadata_well' as the first column
-        aggregated_data = aggregated_data[
-            ["Metadata_well"]
-            + [col for col in aggregated_data.columns if col != "Metadata_well"]
-        ]
-
-        # Annotate the aggregated profile with metadata from the platemap
-        aggregated_data = annotate(
-            aggregated_data,
-            platemap_data,
-            join_on=["Metadata_well_position", "Metadata_well"],
-        )
-
-        # split metadata features and morphology features
-        meta, _ = data_utils.split_meta_and_features(profile=aggregated_data)
-
-        # update aggregated_data with only shared features
-        aggregated_data = aggregated_data[meta + shared_cols]
+        # Update loaded data frame with only shared features
+        aggregated_data = aggregated_data[shared_cols]
 
         # Add a new column indicating the source plate for each row
-        aggregated_data.insert(0, "Metadata_plate_barcode", plate_barcode)
+        aggregated_data.insert(0,"Metadata_plate_barcode" , plate_barcode)
 
         # Append the processed aggregated data for this plate to the batch list
         loaded_aggregated_plates.append(aggregated_data)
 
     # Combine all processed plates for the current batch into a single DataFrame
     combined_aggregated_data = pd.concat(loaded_aggregated_plates)
+    meta_concat, feats_concat = data_utils.split_meta_and_features(combined_aggregated_data)
 
     # Store the combined DataFrame in the loaded_plate_batches dictionary
     loaded_plate_batches[batch_id] = combined_aggregated_data
@@ -219,7 +197,7 @@ for batch_id, profile in loaded_plate_batches.items():
 
         # Calculate average precision (AP) for the profile
         # Positive pairs are based on treatments with the same metadata
-        # Negative pairs compare DMSO-treated wells to all treatments
+        # Negative pairs compare all DMSO-treated wells to all treatments
         replicate_aps = map.average_precision(
             meta=profile[meta_columns],
             feats=profile[feature_columns].values,
@@ -228,9 +206,6 @@ for batch_id, profile in loaded_plate_batches.items():
             neg_sameby=[],
             neg_diffby=copairs_ap_configs["neg_diffby"],
         )
-
-        # Remove duplicate columns from the results, if any
-        replicate_aps = replicate_aps.loc[:, ~replicate_aps.columns.duplicated()]
 
         # Exclude wells treated with the control treatment (DMSO)
         replicate_aps = replicate_aps.loc[
