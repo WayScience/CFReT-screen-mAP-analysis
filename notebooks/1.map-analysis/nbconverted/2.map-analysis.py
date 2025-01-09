@@ -2,7 +2,7 @@
 
 # ## 2. mAP analysis
 #
-# In this notebook we are analyzing the mAP scores generated from the previous step shown [here](./1.run-map.ipynb). In this notebook, we are investigating the mAP scores generated to see if we can identify specific compounds that show evidence of reversing cardiac fibrosis.
+# In this notebook we are analyzing the mAP scores generate from the previous step shown [here](./1.run-map.ipynb). In this note book, we are investigating that mAP scores generated to see if we can identify specific compounds that show evidence of reversing cardiac fibroblast.
 
 # In[1]:
 
@@ -61,7 +61,7 @@ all_map_df["delta_mAP"] = (
     - all_map_df["positive_mean_average_precision"]
 )
 
-# now lets add pathway information into this data
+# now leta add pathway information into this data
 all_map_df = all_map_df.merge(pathway_df, left_on="Metadata_treatment", right_on="UCD ID", how="inner")
 all_map_df = all_map_df.drop(columns="UCD ID")
 all_map_df.head()
@@ -75,7 +75,7 @@ all_map_df.head()
 #
 # The generated scatter plot provides an understanding on how treatments impact cell morphology relative to both control conditions.
 
-# In[ ]:
+# In[4]:
 
 
 # Create a jointplot
@@ -104,7 +104,7 @@ dual_map_plot.ax_joint.grid(True, which="major", linestyle="--", linewidth=0.5, 
 
 # Add axis labels
 dual_map_plot.ax_joint.set_xlabel("mAP Score (Reference: Failing CF Cells + DMSO)", fontsize=12)
-dual_map_plot.ax_joint.set_ylabel("mAP Score (Reference: Healthy CF Cells + DMSO)", fontsize=12)
+dual_map_plot.ax_joint.set_ylabel("mAP Score (Reference: Healthy CF Cells +DMSO)", fontsize=12)
 
 # Add the overall title
 dual_map_plot.fig.suptitle("mAP Scores: Negative vs. Positive Controls", fontsize=16, y=1.0)
@@ -181,11 +181,12 @@ plt.show()
 #   Indicates no difference between the compound's effect on healthy and diseased phenotypes.
 #
 
-# In[ ]:
+# In[5]:
 
 
 # Plot stacked bar histogram using seaborn
 plt.figure(figsize=(10, 6))
+
 sns.histplot(
     data=all_map_df,
     x="delta_mAP",
@@ -193,7 +194,7 @@ sns.histplot(
     multiple="stack",
     bins=20,
     palette="tab10",
-    alpha=0.8
+    alpha=0.8,
 )
 
 # Add plot labels and title
@@ -211,9 +212,10 @@ plt.show()
 
 # Leveraging Delta mAP can also provide an opportunity to rank them from highest to lowest and identify potential hits.
 
-# In[ ]:
+# In[6]:
 
 
+# whole figure configs
 plt.figure(dpi=200)
 
 # only getting the delta map scores
@@ -223,14 +225,22 @@ delta_map_df = all_map_df[["Metadata_treatment", "delta_mAP", "Pathway"]]
 delta_map_df["rank"] = delta_map_df["delta_mAP"].rank(ascending=True, method="max")
 delta_map_df = delta_map_df.sort_values(by="rank", ascending=False)
 
+# creating scatter plot of all Delta mAP score ranks
 sns.scatterplot(
     data=delta_map_df, x="rank", y="delta_mAP", hue="Pathway", palette="tab10"
 )
 
+# setting figure title namez
+plt.title("Delta mAP Rankings", fontsize=14)
+plt.xlabel("Ranks")
+plt.ylabel("Delta mAP")
+
+# setting the axis values
 axis_padding = 0.05
-plt.title("delt_mAP Rankings", fontsize=14)
 plt.xlim(0, delta_map_df["rank"].max() + 1)
 plt.ylim(-axis_padding + delta_map_df["delta_mAP"].min(), delta_map_df["delta_mAP"].max() + axis_padding)
+
+# updating the legend
 plt.rc("legend", fontsize=5)
 plt.rc("legend", title_fontsize=10)
 plt.legend( loc="upper left")
