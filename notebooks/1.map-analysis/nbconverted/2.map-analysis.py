@@ -61,7 +61,7 @@ all_map_df["delta_mAP"] = (
     - all_map_df["positive_mean_average_precision"]
 )
 
-# now leta add pathway information into this data
+# now lets add pathway information into this data
 all_map_df = all_map_df.merge(pathway_df, left_on="Metadata_treatment", right_on="UCD ID", how="inner")
 all_map_df = all_map_df.drop(columns="UCD ID")
 all_map_df.head()
