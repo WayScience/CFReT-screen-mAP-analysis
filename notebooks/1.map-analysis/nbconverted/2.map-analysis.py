@@ -104,7 +104,7 @@ dual_map_plot.ax_joint.grid(True, which="major", linestyle="--", linewidth=0.5, 
 
 # Add axis labels
 dual_map_plot.ax_joint.set_xlabel("mAP Score (Reference: Failing CF Cells + DMSO)", fontsize=12)
-dual_map_plot.ax_joint.set_ylabel("mAP Score (Reference: Healthy CF Cells +DMSO)", fontsize=12)
+dual_map_plot.ax_joint.set_ylabel("mAP Score (Reference: Healthy CF Cells + DMSO)", fontsize=12)
 
 # Add the overall title
 dual_map_plot.fig.suptitle("mAP Scores: Negative vs. Positive Controls", fontsize=16, y=1.0)
