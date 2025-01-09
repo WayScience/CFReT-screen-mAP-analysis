@@ -111,7 +111,7 @@ dual_map_plot.fig.tight_layout()
 # Adjust legend size
 legend = dual_map_plot.ax_joint.legend_
 legend.set_title("Pathway")
-legend.set_bbox_to_anchor((1.51, 1))  # Position the legend outside the plot (optional)
+legend.set_bbox_to_anchor((1.53, 1))  # Position the legend outside the plot (optional)
 for text in legend.get_texts():
     text.set_fontsize(10)  # Set font size for legend labels
 legend.get_title().set_fontsize(12)  # Set font size for legend title
