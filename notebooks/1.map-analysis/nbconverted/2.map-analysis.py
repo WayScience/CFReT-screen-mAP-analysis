@@ -69,9 +69,13 @@ all_map_df.head()
 
 # ## Dual-Control mAP Analysis: Evaluating Therapeutic Potential Through Comparative Phenotypic Scoring
 
-# In this section, we visualize both mAP scores using a scatter plot to examine the distribution of points and interpret the relationships between the scores generated from the negative and positive controls. This helps us explore how treatments compare across these two references and identify trends or patterns in the data.
+# In this section, we use a scatter plot to visualize the distribution of mAP scores, providing insights into the relationships between scores generated from negative and positive controls. This visualization allows us to explore how treatments affect the Failing CF against these two references, helping identify potential compound candidates that reverse the effect of Cardiac Fibrosis.
+# - X-Axis: mAP scores calculated by comparing wells containing failing CF cells treated with a compound against the negative control (Failing CF cells + DMSO).
+# - Y-Axis: mAP scores calculated by comparing wells containing failing CF cells treated with a compound against the positive control (Healthy CF cells + DMSO).
+#
+# The generated scatter plot provides an understanding on how treatments impact cell morphology relative to both control conditions.
 
-# In[4]:
+# In[ ]:
 
 
 # Create a jointplot
@@ -123,6 +127,20 @@ plt.savefig(fig_dir_path / "map_scores_with_density.png", dpi=300, bbox_inches="
 plt.show()
 
 
+# The scatter plot provides insights into how treatments affect failing CF cells compared to both control conditions. Here’s how to interpret different regions of the plot:
+#
+# - **High mAP score on the Y-axis, low mAP score on the X-axis**:
+# This indicates that the compound’s effect causes failing CF cells to resemble the negative control (Failing CF cells) and does not resemble to the positive control (Healthy CF cells + DMSO).
+#
+# - **High mAP scores on both the Y-axis and X-axis**:
+# This suggests that the compound triggers a distinct cellular state not well-represented by either control. The high mAP scores on both axes indicate that the compound significantly alters the cells in ways that do not align closely with the negative or positive control conditions.
+#
+# - **Low mAP score on the Y-axis, high mAP score on the X-axis**:
+# This demonstrates a potential reversal effect. The compound causes failing CF cells to move away from the negative control (Failing CF cells + DMSO) and closer to resembling the positive control (Healthy CF cells).
+#
+# - **Low mAP scores on both the X-axis and Y-axis**:
+# This could indicate potential quality control issues, such as poor-quality replicates or inconsistencies in how the compound was applied.
+
 # ## Differential mAP scores Histogram analysis (Pathway Level)
 #
 # The primary goal of using differential mAP scores (delta_MAP) in this high-content screening is to evaluate the therapeutic potential of 550 compounds for reversing cardiac fibrosis. By comparing the morphological profiles of treated diseased cells against two controls failing cardiac cells + DMSO (negative control) and healthy cardiac cells + DMSO (positive control) the differential mAP scores help identify compounds that effectively shift the diseased phenotype toward the healthy state.
@@ -163,7 +181,7 @@ plt.show()
 #   Indicates no difference between the compound's effect on healthy and diseased phenotypes.
 #
 
-# In[5]:
+# In[ ]:
 
 
 # Plot stacked bar histogram using seaborn
@@ -180,7 +198,7 @@ sns.histplot(
 
 # Add plot labels and title
 plt.title("Delta mAP Distribution by Pathway", fontsize=16)
-plt.xlabel("Delta mAP (Positive mAP - Negative mAP)", fontsize=12)
+plt.xlabel("Delta mAP (Negative mAP - Positive mAP)", fontsize=12)
 plt.ylabel("Frequency", fontsize=12)
 plt.tight_layout()
 
@@ -193,7 +211,7 @@ plt.show()
 
 # Leveraging Delta mAP can also provide an opportunity to rank them from highest to lowest and identify potential hits.
 
-# In[6]:
+# In[ ]:
 
 
 plt.figure(dpi=200)
