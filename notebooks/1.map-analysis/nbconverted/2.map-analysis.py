@@ -55,6 +55,10 @@ pc_map_df = pc_map_df.rename(columns={"mean_average_precision":"positive_mean_av
 # merge both together
 all_map_df = nc_map_df.merge(pc_map_df, on="Metadata_treatment", how="inner")
 
+# checking if none of the data has been dropped after
+all_merged_df_rows = all_map_df.shape[0]
+assert all_merged_df_rows == nc_map_df.shape[0] and all_merged_df_rows == pc_map_df.shape[0], "Row entries are not the same, missing some compounds after merge"
+
 # calculating delta mAP
 all_map_df["delta_mAP"] = (
     all_map_df["negative_mean_average_precision"]
@@ -64,6 +68,9 @@ all_map_df["delta_mAP"] = (
 # now leta add pathway information into this data
 all_map_df = all_map_df.merge(pathway_df, left_on="Metadata_treatment", right_on="UCD ID", how="inner")
 all_map_df = all_map_df.drop(columns="UCD ID")
+assert all_map_df.shape[0] == all_merged_df_rows, "Row entries are not the same, missing some compounds"
+
+print(all_map_df.shape)
 all_map_df.head()
 
 
