@@ -2,7 +2,7 @@
 
 # ## 2. mAP analysis
 #
-# In this notebook we are analyzing the mAP scores generate from the previous step shown [here](./1.run-map.ipynb). In this note book, we are investigating that mAP scores generated to see if we can identify specific compounds that show evidence of reversing cardiac fibroblast.
+# In this notebook we are analyzing the mAP scores generated from the previous step shown [here](./1.run-map.ipynb). In this notebook, we are investigating the mAP scores generated to see if we can identify specific compounds that show evidence of reversing cardiac fibrosis.
 
 # In[1]:
 
