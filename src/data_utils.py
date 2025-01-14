@@ -23,7 +23,7 @@ def split_meta_and_features(
         ["Nuclei", "Cells", "Cytoplasm"]
     metadata_tag : Optional[bool], optional
         indicating if the profiles have metadata columns tagged with 'Metadata_'
-        , by default False
+        , by default Falsehttps://trello.com/b/J2O8qxmL/way-lab-pull-requests
 
     Returns
     -------
@@ -46,8 +46,9 @@ def split_meta_and_features(
 
     return (meta_cols, features_cols)
 
+
 def shuffle_features(profile: pd.DataFrame, seed: int = 0) -> pd.DataFrame:
-    """ Shuffle the values in the feature columns of a DataFrame while preserving metadata columns.
+    """Shuffle the values in the feature columns of a DataFrame while preserving metadata columns.
 
     This function separates the metadata and feature columns from the input DataFrame, shuffles
     the values within each feature column independently using a specified random seed, and then
@@ -81,9 +82,7 @@ def shuffle_features(profile: pd.DataFrame, seed: int = 0) -> pd.DataFrame:
     meta_cols, feat_cols = split_meta_and_features(profile)
 
     # Select only feature columns for shuffling
-    feats_df = profile[
-        feat_cols
-    ].copy()
+    feats_df = profile[feat_cols].copy()
 
     # Shuffle each feature column independently
     for colname in feats_df.columns:
