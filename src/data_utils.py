@@ -92,3 +92,46 @@ def shuffle_features(profile: pd.DataFrame, seed: int = 0) -> pd.DataFrame:
 
     # Concatenate metadata and shuffled feature columns
     return pd.concat([profile[meta_cols], feats_df], axis=1)
+
+def label_control_types(metadata_cell_type, heart_failure_type):
+    """ Label control types based on cell metadata and heart failure type.
+
+    This helper function for Pandas DataFrame operations assigns control labels
+    ('positive' or 'negative') based on the combination of `metadata_cell_type`
+    and `heart_failure_type`. It raises an error for unknown or invalid combinations.
+
+    Parameters
+    ----------
+    metadata_cell_type : str
+        The cell type metadata. Expected values are:
+        - "healthy": Indicates a healthy cell type.
+        - "failing": Indicates a failing cell type.
+
+    heart_failure_type : str or None
+        The type of heart failure associated with the cell type. Expected values are:
+        - None: Used when `metadata_cell_type` is "healthy".
+        - "dilated_cardiomyopathy": Used when `metadata_cell_type` is "failing".
+
+    Returns
+    -------
+    str
+        A control label based on the input combination:
+        - "positive": For healthy cells with no heart failure type.
+        - "negative": For failing cells with "dilated_cardiomyopathy".
+
+    Raises
+    ------
+    ValueError
+        If the combination of `metadata_cell_type` and `heart_failure_type` does not
+        match the expected criteria.
+
+    """
+    if metadata_cell_type == "healthy" and heart_failure_type is None:
+        return "positive"
+    elif (
+        metadata_cell_type == "failing"
+        and heart_failure_type == "dilated_cardiomyopathy"
+    ):
+        return "negative"
+    else:
+        raise ValueError(f"Unknown combination added: {metadata_cell_type} {heart_failure_type}")
