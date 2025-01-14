@@ -232,8 +232,8 @@ def calculate_trt_map_batch_profiles(
 
     # setting in project configs
     general_configs = configs["general_configs"]
-    copairs_ap_configs = configs["copairs_ap_configs"]
-    copairs_map_configs = configs["copairs_map_configs"]
+    copairs_ap_configs = configs["trt_copairs_ap_configs"]
+    copairs_map_configs = configs["trt_copairs_map_configs"]
 
     # setting shuffled labels
     shuffled_label = "original"
