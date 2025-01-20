@@ -19,9 +19,9 @@
 # #### **Biological Interpretation**
 # mAP scores help determine which compounds exhibit phenotypic changes that resemble those of healthy cells, making them potential candidates for reversing the effects of cardiac fibrosis. By comparing the phenotypic activity of compounds to both positive and negative controls, we can prioritize compounds for further validation.
 #
-# **what is outputed**
-# - AP scores generated using both the postive and negvative controls
-# - mAP scores generated using both the postive and negative controls
+# **what is outputted**
+# - AP scores generated using both the positive and negative controls
+# - mAP scores generated using both the positive and negative controls
 
 # In[1]:
 
