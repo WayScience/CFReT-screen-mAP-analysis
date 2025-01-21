@@ -26,7 +26,6 @@
 # In[1]:
 
 
-import json
 import pathlib
 import sys
 import warnings
@@ -108,27 +107,18 @@ control_list = [("negative", "DMSO", "failing"), ("positive", "DMSO", "healthy")
 
 
 shared_cols = None
-save_path = (results_dir / "map_scores.json").resolve()
+for aggregated_profile in list(data_dir.glob("*.parquet")):
+    # read aggreagated profiled and column names
+    agg_df = pd.read_parquet(aggregated_profile)
+    columns = list(agg_df.columns)
 
-if save_path.exists():
-    print("shared columns configs exists, loading json file")
-    shared_cols = json.load(open(save_path))["shared_columns"]
-else:
-    for aggregated_profile in list(data_dir.glob("*.parquet")):
-        # read aggreagated profiled and column names
-        agg_df = pd.read_parquet(aggregated_profile)
-        columns = list(agg_df.columns)
-
-        # Update the shared_columns set
-        if shared_cols is None:
-            # Initialize shared columns with the first profile's columns, preserving order
-            shared_cols = columns
-        else:
-            # Retain only the columns present in both the current profile and shared columns
-            shared_cols = [col for col in shared_cols if col in columns]
-
-    # save the shared columns into a json file for future resuse
-    json.dump({"shared_columns": shared_cols}, open(results_dir / "shared_columns.json", "w"))
+    # Update the shared_columns set
+    if shared_cols is None:
+        # Initialize shared columns with the first profile's columns, preserving order
+        shared_cols = columns
+    else:
+        # Retain only the columns present in both the current profile and shared columns
+        shared_cols = [col for col in shared_cols if col in columns]
 
 
 # ## Formatting Data
