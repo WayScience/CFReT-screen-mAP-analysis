@@ -26,6 +26,7 @@
 # In[1]:
 
 
+import json
 import pathlib
 import sys
 import warnings
@@ -80,8 +81,9 @@ platemap_path = (metadata_dir / "updated_barcode_platemap.csv").resolve(strict=T
 config_path = pathlib.Path("../config.yaml").resolve(strict=True)
 
 # Setting the results directory, resolve the full path, and create it if it doesn't already exist
-results_dir = pathlib.Path("./results/map_scores").resolve()
-results_dir.mkdir(exist_ok=True, parents=True)
+results_dir = pathlib.Path("./results").resolve()
+map_results_dir = (results_dir /"map_scores").resolve()
+map_results_dir.mkdir(exist_ok=True, parents=True)
 
 
 # Loading in the files and setting config parameters
@@ -106,18 +108,27 @@ control_list = [("negative", "DMSO", "failing"), ("positive", "DMSO", "healthy")
 
 
 shared_cols = None
-for aggregated_profile in list(data_dir.glob("*.parquet")):
-    # read aggreagated profiled and column names
-    agg_df = pd.read_parquet(aggregated_profile)
-    columns = list(agg_df.columns)
+save_path = (results_dir / "map_scores.json").resolve()
 
-    # Update the shared_columns set
-    if shared_cols is None:
-        # Initialize shared columns with the first profile's columns, preserving order
-        shared_cols = columns
-    else:
-        # Retain only the columns present in both the current profile and shared columns
-        shared_cols = [col for col in shared_cols if col in columns]
+if save_path.exists():
+    print("shared columns configs exists, loading json file")
+    shared_cols = json.load(open(save_path))["shared_columns"]
+else:
+    for aggregated_profile in list(data_dir.glob("*.parquet")):
+        # read aggreagated profiled and column names
+        agg_df = pd.read_parquet(aggregated_profile)
+        columns = list(agg_df.columns)
+
+        # Update the shared_columns set
+        if shared_cols is None:
+            # Initialize shared columns with the first profile's columns, preserving order
+            shared_cols = columns
+        else:
+            # Retain only the columns present in both the current profile and shared columns
+            shared_cols = [col for col in shared_cols if col in columns]
+
+    # save the shared columns into a json file for future resuse
+    json.dump({"shared_columns": shared_cols}, open(results_dir / "shared_columns.json", "w"))
 
 
 # ## Formatting Data
@@ -304,10 +315,10 @@ for batch_id, profile in loaded_plate_batches.items():
 
         # Store the computed AP and mAP scores as CSV files
         dmso_ap_scores.to_csv(
-            results_dir / f"{batch_id}_{ref_type}_ref_dmso_AP_scores.csv"
+            map_results_dir / f"{batch_id}_{ref_type}_ref_dmso_AP_scores.csv"
         )
         dmso_map_scores.to_csv(
-            results_dir / f"{batch_id}_{ref_type}_ref_dmso_mAP_scores.csv"
+            map_results_dir / f"{batch_id}_{ref_type}_ref_dmso_mAP_scores.csv"
         )
 
 
@@ -386,7 +397,7 @@ for batch_id, profile in loaded_plate_batches.items():
 
         # Save the calculated AP scores to a file for further analysis
         trt_replicate_aps.to_csv(
-            results_dir
+            map_results_dir
             / f"{control_type}_control_{cell_state}_{control_treatment}_AP_scores.csv",
             index=False,
         )
@@ -402,7 +413,7 @@ for batch_id, profile in loaded_plate_batches.items():
 
         # Save the mAP scores to a file for reporting
         trt_replicate_maps.to_csv(
-            results_dir
+            map_results_dir
             / f"{control_type}_control_{cell_state}_{control_treatment}_mAP_scores.csv",
             index=False,
         )
