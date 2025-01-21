@@ -37,7 +37,7 @@ from pycytominer.cyto_utils import load_profiles
 from tqdm import TqdmWarning
 
 sys.path.append("../../")
-from src import data_utils, io_utils
+from utils import data_utils, io_utils
 
 # removing warnigns
 warnings.filterwarnings("ignore", category=TqdmWarning)
