@@ -101,7 +101,9 @@ def weighted_ks_test(
         target_weights = np.ones(len(target)) / len(target)
         reference_weights = np.ones(len(reference)) / len(reference)
 
-        # Step 2: Sort the values of the feature and their corresponding weights
+        # Step 2: Sort the values of the feature and their corresponding weights.
+        # A required step in constructing cumulative distribution functions (CDFs),
+        # which will be used on the next step
         sorted_target_indices = np.argsort(target[morphology_feature].to_numpy())
         sorted_reference_indices = np.argsort(reference[morphology_feature].to_numpy())
 
@@ -239,9 +241,6 @@ def find_shared_features(profile_paths: list[str | pathlib.Path]) -> list[str]:
 # setting the directory path of the data
 data_dir = pathlib.Path("../data").resolve(strict=True)
 
-# setting path to shared morphology features json file
-shared_features_path = pathlib.Path("../1.map-analysis/results/shared_columns.json").resolve(strict=True)
-
 # setting path to the single-cell feature selected dataset
 selected_features_files = list(data_dir.glob("*sc_feature_selected.parquet"))
 
@@ -291,7 +290,7 @@ target_df = all_profiles_df.loc[(all_profiles_df["Metadata_cell_type"] == "healt
 
 # selecting one of the profiles to just split the metadata and morphology features
 # they should be the same for all profiles
-meta, feats = data_utils.split_meta_and_features(reference_df)
+_, feats = data_utils.split_meta_and_features(reference_df)
 
 print("Shape of the reference dataset:", reference_df.shape)
 print("Shape of the target dataset:", target_df.shape)
@@ -300,7 +299,11 @@ print("Shape of the target dataset:", target_df.shape)
 # In[6]:
 
 
-# applying weighted ks test
+# The WKS test works for the given data because it accounts for imbalanced sample sizes
+# between the reference and target datasets by applying weights to the cumulative
+# distribution functions (CDFs). This ensures that the comparison of morphological
+# features is fair and unbiased, regardless of differences in the number of cells
+# in the two datasets.
 off_morph_signatures, on_morph_signatures = weighted_ks_test(reference_df[feats], target_df[feats], p_thresh=0.05)
 
 
