@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Shell script to download data required for this analysis notebook
+# Shell script executes the pipeline to identify
 
 # Activate the conda environment
 conda activate cfret-map
@@ -10,4 +10,4 @@ conda activate cfret-map
 jupyter nbconvert --to python --output-dir=nbconverted/ *.ipynb
 
 # Execute the data download script
-python nbconverted/0.download-data.py
+python nbconverted/2.single_cell_heterogeneity.py
