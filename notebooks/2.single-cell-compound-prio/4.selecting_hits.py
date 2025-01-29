@@ -172,7 +172,7 @@ print(ranked_df.shape)
 ranked_df.head()
 
 
-# Next we rank they treatments based on their three scores
+# Next we rank the treatments based on their three scores
 
 # In[7]:
 
