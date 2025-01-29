@@ -45,7 +45,7 @@ def update_dmso_name(treatment_name: str, cell_type: str) -> str:
         return treatment_name
 
 
-# setting up paths
+# Setting up paths
 
 # In[3]:
 
