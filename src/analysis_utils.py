@@ -19,7 +19,7 @@ def calculate_dmso_map_batch_profiles(
     shuffled: bool | None = False,
 ) -> None:
     """ Calculate average precision (AP) and mean average precision (mAP) scores
-    for DMSO-treated profiles across batches.
+    for DMSO-treated profiles across batches of replicate plates.
 
     This function processes batched phenotypic profiles to compute AP and mAP
     scores for wells treated with DMSO (used as control treatments). It saves
