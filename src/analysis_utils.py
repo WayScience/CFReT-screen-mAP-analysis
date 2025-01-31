@@ -1,6 +1,6 @@
 """
-This module contains all the functions responsible for performing the analysis in this
-project.
+This module contains all the functions responsible for performing the CFReT analysis in
+this project.
 """
 
 import pathlib
@@ -69,6 +69,8 @@ def calculate_dmso_map_batch_profiles(
     cntrl_copairs_map_configs = configs["cntrl_copairs_map_configs"]
 
     # setting controls
+    # where negative controls indicates failing cells and positive controls indicates
+    # healthy cells
     control_list = ["negative", "positive"]
     # setting shuffled labels
     shuffled_label = "original"
