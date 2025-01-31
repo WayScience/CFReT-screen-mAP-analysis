@@ -23,7 +23,7 @@ def split_meta_and_features(
         ["Nuclei", "Cells", "Cytoplasm"]
     metadata_tag : Optional[bool], optional
         indicating if the profiles have metadata columns tagged with 'Metadata_'
-        , by default Falsehttps://trello.com/b/J2O8qxmL/way-lab-pull-requests
+        , by default False
 
     Returns
     -------
