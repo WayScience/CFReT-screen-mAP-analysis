@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This shell scripts convert all individual steps required in the compound prioritization
+# This shell script converts all individual steps required in the compound prioritization
 # pipeline to Python scripts and executes them in sequence. This is done to ensure that
 # the pipeline can be executed in a single command.
 
