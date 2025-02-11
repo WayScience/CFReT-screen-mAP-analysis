@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# This shell scripts runs the single-cell compound prioritization pipeline
+# This shell script converts all individual steps required in the compound prioritization
+# pipeline to Python scripts and executes them in sequence. This is done to ensure that
+# the pipeline can be executed in a single command.
 
 # Activate the conda environment
 conda activate cfret-map
@@ -13,3 +15,4 @@ jupyter nbconvert --to python --output-dir=nbconverted/ *.ipynb
 python nbconverted/1.on_off_morphology_signatures.py
 python nbconverted/2.single_cell_heterogeneity.py
 python nbconverted/3.apply_metric.py
+python nbconverted/4.selecting_hits.py
