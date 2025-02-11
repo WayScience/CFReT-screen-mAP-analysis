@@ -246,7 +246,7 @@ for trt_name, df in treated_df.groupby(metadata_treatments):
             method="shift",
         )
 
-        # Here we are separating the morphological feature spaces in order to generated
+        # Here we are separating the morphological feature spaces in order to generate
         # two scores for both the on and off morphological signatures
         off_target_cluster_df = target_cluster_df[off_sigs].reset_index(drop=True)
         off_treated_cluster_df = treated_cluster_df[off_sigs].reset_index(drop=True)
