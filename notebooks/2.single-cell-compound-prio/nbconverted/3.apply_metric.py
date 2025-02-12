@@ -14,6 +14,7 @@ import numpy as np
 import pandas as pd
 from pycytominer.cyto_utils import load_profiles
 from scipy.stats import entropy
+from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import MinMaxScaler
 
 # importing analysis utils
@@ -35,11 +36,11 @@ def scale_data_to_non_negative_dist(
 ):
     """Preprocesses two DataFrames by either applying mean shifting or MinMax scaling.
 
-    This function preprocesses two DataFrames by either applying mean shifting or MinMax
+    This function preprocesses two DataFrames by either applying shifting or MinMax
     scaling to ensure non-negative values. The function first separates metadata and features
     from the target and treated DataFrames. It then handles NaN values by filling with the
     column-wise mean (other options include: "tiny" and "zero"). If the method is
-    "shift", the function ensures non-negative values by mean shifting both DataFrames.
+    "shift", the function ensures non-negative values by shifting both DataFrames to a non-negative value.
     If the method is "minmax", the function scales both DataFrames to the [0, 1] range.
     The function returns two DataFrames with metadata and processed features.
 
@@ -80,17 +81,24 @@ def scale_data_to_non_negative_dist(
     elif nan_handle == "zero":
         target_features = target_features.fillna(0)
         treated_features = treated_features.fillna(0)
+    elif nan_handle == "impute":
+        # create an imputer object
+        imputer = SimpleImputer(strategy="mean")
+        target_features = imputer.fit(target_features)
+        treated_features = imputer.fit(treated_features)
+    else:
+        raise ValueError("Invalid nan_handle. Choose either 'mean', 'tiny', 'zero', or 'impute'.")
 
+    # Apply preprocessing method to ensure non-negative values
+    # shifting values to ensure non-negative values
     if method == "shift":
-        # Mean shifting: Ensure non-negative values by shifting both DataFrames
         min_target = target_features.min().min()
         min_treated = treated_features.min().min()
         shift_value = max(0, -min(min_target, min_treated))  # Find the shift value
         target_features += shift_value
         treated_features += shift_value
-
+    # MinMax scaling: Scale both DataFrames to [0, 1] range
     elif method == "minmax":
-        # MinMax scaling: Scale both DataFrames to [0, 1] range
         scaler = MinMaxScaler()
         target_features = pd.DataFrame(
             scaler.fit_transform(target_features),
@@ -117,7 +125,7 @@ def scale_data_to_non_negative_dist(
 
 
 # setting path for data directory
-data_dir = pathlib.Path("../data")
+data_dir = pathlib.Path("../data").resolve(strict=True)
 results_dir = pathlib.Path("./results").resolve(strict=True)
 
 # setting path for on and off morphology features
@@ -144,6 +152,10 @@ metric_results_dir.mkdir(exist_ok=True)
 
 
 # loading on and off morphological signatures
+# off_morph_signatures: indicates morphological features that are not significantly
+# associated with specific cellular state
+# on_morph_signatures: indicates morphological features that are  significantly
+# associated with specific cellular state
 with open(morph_sigs_path) as content:
     on_off_sigs = json.load(content)
 on_sigs = on_off_sigs["off_morph_signatures"]["features"]
@@ -217,12 +229,12 @@ treated_df = treated_df.loc[treated_df["Metadata_cluster_label"] != -1]
 # After the noise removal, we can check the number of clusters in the target and treated data'
 # and form combinations between the two datasets to compare
 score_results = []
-for trt_name, df in treated_df.groupby(metadata_treatments):
+for trt_name, trt_df in treated_df.groupby(metadata_treatments):
     # Generate combinations of cluster labels between target and treated data
     clusters_to_compare = list(
         product(
             target_df["Metadata_cluster_label"].unique().tolist(),
-            df["Metadata_cluster_label"].unique().tolist(),
+            trt_df["Metadata_cluster_label"].unique().tolist(),
         )
     )
 
@@ -232,7 +244,7 @@ for trt_name, df in treated_df.groupby(metadata_treatments):
         target_cluster_df = target_df.loc[
             target_df["Metadata_cluster_label"] == target_cluster
         ]
-        treated_cluster_df = df.loc[df["Metadata_cluster_label"] == treated_cluster]
+        treated_cluster_df = trt_df.loc[trt_df["Metadata_cluster_label"] == treated_cluster]
 
         # Next we need to convert morphological features into a probability distribution
         # Assumptions of KL divergence is that the data is a non-negative, probability
@@ -246,7 +258,7 @@ for trt_name, df in treated_df.groupby(metadata_treatments):
             method="shift",
         )
 
-        # Here we are separating the morphological feature spaces in order to generate
+        # Here we are separating the morphological feature spaces in order to generated
         # two scores for both the on and off morphological signatures
         off_target_cluster_df = target_cluster_df[off_sigs].reset_index(drop=True)
         off_treated_cluster_df = treated_cluster_df[off_sigs].reset_index(drop=True)
