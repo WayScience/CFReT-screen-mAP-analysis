@@ -193,7 +193,7 @@ analysis_utils.calculate_dmso_map_batch_profiles(
 # In[ ]:
 
 
-# Here we execute map pipeline with with the original
+# Here we execute mAP pipeline with with the original
 analysis_utils.calculate_trt_map_batch_profiles(
     batched_profiles=loaded_plate_batches,
     configs=configs,
@@ -201,7 +201,7 @@ analysis_utils.calculate_trt_map_batch_profiles(
     shuffled=False
 )
 
-# Here we execute map pipeline with with the shuffled dataset
+# Here we execute mAP pipeline with with the shuffled dataset
 analysis_utils.calculate_trt_map_batch_profiles(
     batched_profiles=loaded_shuffled_plate_batches,
     configs=configs,
