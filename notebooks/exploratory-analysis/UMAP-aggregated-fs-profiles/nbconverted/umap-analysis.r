@@ -2,7 +2,6 @@ suppressMessages(library(umap))
 suppressMessages(library(ggplot2))
 suppressMessages(library(pheatmap))
 suppressMessages(library(RColorBrewer))
-# suppressMessages(library(viridis))
 suppressMessages(library(ggthemes))
 
 # set file path to the concatenated aggregated feature selected profiles
@@ -71,7 +70,7 @@ ggplot(umap_control_df, aes(x = UMAP1, y = UMAP2, shape = Plate, fill = ControlT
   geom_point(size = 4, stroke = 1, color = "black", alpha = 0.9) +  # Larger points with black border
   scale_shape_manual(values = plate_shapes) +  # Assign shapes to Plate
   scale_fill_manual(values = control_colors) +  # Fill shapes by ControlType
-  theme_minimal(base_size = 18) +  # Increase base font size
+  theme_bw(base_size = 18) +  # Increase base font size
   labs(
     title = "UMAP of control profiles",
     x = "UMAP 1",
@@ -81,12 +80,12 @@ ggplot(umap_control_df, aes(x = UMAP1, y = UMAP2, shape = Plate, fill = ControlT
   ) +
   guides(fill = guide_legend(override.aes = list(color = control_colors))) +  # Add color to legend
   theme(
-    legend.position = "right",  # Place legend on the right
-    legend.text = element_text(size = 16),  # Increase legend text size
-    legend.title = element_text(size = 18, face = "bold"),  # Bold legend title
-    axis.text = element_text(size = 16),  # Increase axis text size
-    axis.title = element_text(size = 18, face = "bold"),  # Bold axis labels
-    plot.title = element_text(size = 20, face = "bold", hjust = 0.5)  # Centered title
+    legend.position = "right",
+    legend.text = element_text(size = 16), # Place legend on the right
+    legend.title = element_text(size = 18, face = "bold"),
+    axis.text = element_text(size = 16),
+    axis.title = element_text(size = 18, face = "bold"),
+    plot.title = element_text(size = 20, face = "bold", hjust = 0.5)
   )
 
 
@@ -125,7 +124,7 @@ plate_colors <- setNames(
 ggplot(umap_df, aes(x = UMAP1, y = UMAP2, color = Plate)) +
   geom_point(alpha = 0.7, size = 5, shape = 16) +
   scale_color_manual(values = plate_colors) +
-  theme_minimal(base_size = 18) +
+  theme_bw(base_size = 18) +
   labs(
     title = "UMAP of profiles across all plates",
     x = "UMAP 1",
@@ -157,7 +156,7 @@ pathway_colors <- setNames(
 ggplot(umap_df, aes(x = UMAP1, y = UMAP2, color = Pathway)) +
   geom_point(alpha = 0.7, size = 5, shape = 16) +
   scale_color_manual(values = pathway_colors) +
-  theme_minimal(base_size = 18) +
+  theme_bw( base_size = 18) +
   labs(
     title = "UMAP of treated profiles and targeted associated pathways",
     x = "UMAP 1",
