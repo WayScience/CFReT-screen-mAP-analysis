@@ -103,7 +103,7 @@ results_dir.mkdir(exist_ok=True, parents=True)
 
 # Next, we load the configuration file that contains the shared features across all plates within the batch. Then, we load each plate within the batch and add new metadata columns for downstream analysis.
 
-# In[4]:
+# In[7]:
 
 
 # loading config
@@ -128,6 +128,8 @@ for plate_idx, profile_path in enumerate(list_of_paths):
     # inserting the plate name at the first column
     aggregated_profiles.insert(0, "Metadata_plate_barcode", plate_name)
     aggregated_profiles.insert(1, "Metadata_plate_index", plate_idx + 1)
+
+    print(plate_name, aggregated_profiles.loc[aggregated_profiles["Metadata_Pathway"] == "GPCR & G Protein"].shape)
 
     # next is to shuffled the data
     shuffled_aggregated_profiles = data_utils.shuffle_features(aggregated_profiles)
