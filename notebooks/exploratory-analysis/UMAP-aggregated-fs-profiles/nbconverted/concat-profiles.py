@@ -103,7 +103,7 @@ results_dir.mkdir(exist_ok=True, parents=True)
 
 # Next, we load the configuration file that contains the shared features across all plates within the batch. Then, we load each plate within the batch and add new metadata columns for downstream analysis.
 
-# In[7]:
+# In[4]:
 
 
 # loading config
