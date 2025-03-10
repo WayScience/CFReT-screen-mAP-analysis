@@ -28,8 +28,12 @@ sel_metadata <- c("Metadata_plate_barcode", "Metadata_control_type", "Metadata_P
 metadata_df <- concat.agg_fs_df[,sel_metadata]
 morphology_df <- concat.agg_fs_df[,!grepl("^Metadata_", colnames(concat.agg_fs_df))]
 
-# if the Metadata_Pathway is blank or contains None/Nan replace it with "DMSO"
-metadata_df$Metadata_Pathway[metadata_df$Metadata_Pathway == ""] <- "DMSO"
+# if Treatment is DMSO and Metadata_Pathway is empty, set Metadata_Pathway to DMSO
+metadata_df$Metadata_Pathway[metadata_df$Metadata_treatment == "DMSO-positive" & metadata_df$Metadata_Pathway == ""] <- "DMSO"
+metadata_df$Metadata_Pathway[metadata_df$Metadata_treatment == "DMSO-negative" & metadata_df$Metadata_Pathway == ""] <- "DMSO"
+
+# if Treatment is not DMSO and Metadata_Pathway is empty, set Metadata_Pathway to unknown
+metadata_df$Metadata_Pathway[metadata_df$Metadata_treatment != "DMSO" & metadata_df$Metadata_Pathway == ""] <- "Unknown"
 
 # setting seed
 set.seed(0)
@@ -111,14 +115,20 @@ path.figure <- file.path(path.output, "umap_control_profiles.png")
 ggsave(path.figure, width = 15, height = 11, units = "in", dpi = 300)
 print(paste("UMAP of control profiles saved at", path.figure))
 
-# set seed
-set.seed(0)
-
 # Generate a color palette dynamically for unique plates
 plate_colors <- setNames(
   colorRampPalette(brewer.pal(8, "Dark2"))(length(unique(umap_df$Plate))),
   unique(umap_df$Plate)
 )
+
+# Generate a color palette dynamical for unique treatments (total of 51)
+treatment_colors <- setNames(
+  colorRampPalette(brewer.pal(8, "Dark2"))(length(unique(umap_df$Treatment))),
+  unique(umap_df$Treatment)
+)
+
+# set seed
+set.seed(0)
 
 # Plot UMAP with enhanced aesthetics for publication
 ggplot(umap_df, aes(x = UMAP1, y = UMAP2, color = Plate)) +
@@ -179,7 +189,7 @@ print(paste("UMAP of pathway profiles saved at", path.figure))
 
 
 # update figure size
-options(repr.plot.width=15, repr.plot.height=30)
+options(repr.plot.width = 15, repr.plot.height = 30)
 
 # using the same UMAP coordinates, create a new dataframe as "background_df" in order to plot the background
 background_df <- data.frame(
@@ -218,3 +228,9 @@ ggplot(umap_df, aes(x = UMAP1, y = UMAP2, color = Pathway)) +
 path.figure <- file.path(path.output, "facetplot_umap_all_plate_pathway_profiles.png")
 ggsave(path.figure, width = 15, height = 30, units = "in", dpi = 300)
 print(paste("UMAP of all plate and pathway profiles saved at", path.figure))
+
+
+# filter this to only where Pathwat is DMSO
+umap_df_dmsos <- umap_df[umap_df$Pathway == "DMSO", ]
+
+umap_df_dmsos
