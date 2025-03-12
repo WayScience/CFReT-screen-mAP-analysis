@@ -28,10 +28,11 @@ metadata_df <- agg_fs_profiles_df %>% select(starts_with("Metadata_"))
 morphology_df <- agg_fs_profiles_df %>% select(-starts_with("Metadata_"))
 
 # execute kBET
+set.seed(0)
 batch.estimate <- kBET(morphology_df, metadata_df$Metadata_plate_barcode, n_repeat = 1000, plot=FALSE)
 
 # size of plot in notebooks
-options(repr.plot.width=5, repr.plot.height=10)
+options(repr.plot.width=4, repr.plot.height=6)
 
 # collecting kBET values for plotting
 plot.data <- data.frame(class=rep(c('observed', 'expected'),
@@ -42,7 +43,7 @@ plot.data <- data.frame(class=rep(c('observed', 'expected'),
 kbet_results_plot <- ggplot(plot.data, aes(class, data)) + geom_boxplot() +
      labs(x='Test', y='Rejection rate',title='kBET test results') +
      theme_bw() +
-     theme(text = element_text(size=25)) +
+     theme(text = element_text(size=20)) +
      scale_y_continuous(limits=c(0,1))
 
 
