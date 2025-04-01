@@ -82,7 +82,7 @@ concat_profile_df.head()
 
 # ## Calculating correlation of each samples
 #
-# In this section fo the notebook, we build on our Pearson correlation analysis by visualizing the data with a seaborn clustermap. With each treatment linked to a specific pathway target, the clustergram not only groups samples based on morphological similarity but also allows us to observe whether treatments targeting the same pathway exhibit similar phenotypic profiles. This integrative approach provides insights into how specific pathway interventions drive morphological changes, thereby enhancing our biological interpretation of the treatment effects.
+# In this section of the notebook, we build on our Pearson correlation analysis by visualizing the data with a seaborn clustermap. With each treatment linked to a specific pathway target, the clustergram not only groups samples based on morphological similarity but also allows us to observe whether treatments targeting the same pathway exhibit similar phenotypic profiles. This integrative approach provides insights into how specific pathway interventions drive morphological changes, thereby enhancing our biological interpretation of the treatment effects.
 
 # In[5]:
 
