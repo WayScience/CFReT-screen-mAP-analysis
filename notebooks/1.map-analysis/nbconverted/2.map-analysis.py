@@ -143,10 +143,10 @@ negref_mAP_scores_path = (
 
 # Setting shuffled dmso mAP scores paths
 shuffled_posref_mAP_scores_path = (
-    map_scores_dir / "batch_1_original_positive_ref_dmso_mAP_scores.csv"
+    map_scores_dir / "batch_1_shuffled_positive_ref_dmso_mAP_scores.csv"
 ).resolve(strict=True)
 shuffled_negref_mAP_scores_path = (
-    map_scores_dir / "batch_1_original_negative_ref_dmso_mAP_scores.csv"
+    map_scores_dir / "batch_1_shuffled_negative_ref_dmso_mAP_scores.csv"
 )
 
 # make directory for figures

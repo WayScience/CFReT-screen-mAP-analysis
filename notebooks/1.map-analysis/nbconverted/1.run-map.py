@@ -215,11 +215,13 @@ for batch_index, (platemap_filename, associated_plates_df) in enumerate(
         loaded_shuffled_aggregated_plates.append(shuffled_aggregated_data)
 
     # combine all processed plates for the current batch into a single DataFrame
-    combined_aggregated_data = pd.concat(loaded_aggregated_plates).reset_index().rename(columns={"index": "Metadata_old_index"})
+    # combined_aggregated_data = pd.concat(loaded_aggregated_plates).reset_index().rename(columns={"index": "Metadata_old_index"})
+    combined_aggregated_data = pd.concat(loaded_aggregated_plates).reset_index(drop=True)
     meta_concat, feats_concat = data_utils.split_meta_and_features(combined_aggregated_data)
 
     # combine all shuffled and processed plates for the current batch into a single DataFrame
-    shuffled_combined_aggregated_data = pd.concat(loaded_shuffled_aggregated_plates).reset_index().rename(columns={"index": "Metadata_old_index"})
+    # shuffled_combined_aggregated_data = pd.concat(loaded_shuffled_aggregated_plates).reset_index().rename(columns={"index": "Metadata_old_index"})
+    shuffled_combined_aggregated_data = pd.concat(loaded_shuffled_aggregated_plates).reset_index(drop=True)
     meta_concat, feats_concat = data_utils.split_meta_and_features(shuffled_combined_aggregated_data)
 
     # store the combined DataFrame in the loaded_plate_batches dictionary
