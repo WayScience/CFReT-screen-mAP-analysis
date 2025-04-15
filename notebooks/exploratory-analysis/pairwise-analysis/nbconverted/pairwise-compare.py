@@ -31,7 +31,7 @@ output_path.mkdir(exist_ok=True)
 # In[3]:
 
 
-# loading in CFReT well aggregated profiles
+# Create the "Metadata_plate_well" column using iloc
 agg_profile = load_profiles(data_path)
 
 # split the features:
@@ -42,6 +42,7 @@ dmso_profiles = agg_profile.loc[
     (agg_profile["Metadata_treatment"] == "DMSO-positive")
     | (agg_profile["Metadata_treatment"] == "DMSO-negative")
 ]
+dmso_profiles["Metadata_plate_well"] = dmso_profiles[["Metadata_plate_name", "Metadata_Well"]].apply(lambda row: f"{row[0]}_{row[1]}", axis=1)
 
 # create a dataframe only containing pathway information and the the treatments
 pathway_df = agg_profile[["Metadata_treatment", "Metadata_Pathway"]]
@@ -65,7 +66,7 @@ pathway_df = agg_profile[["Metadata_treatment", "Metadata_Pathway"]]
 dmso_pos_cntrl_comparer = PairwiseCompareManager(
     _df=dmso_profiles.loc[dmso_profiles["Metadata_treatment"] == "DMSO-positive"],
     _feat_cols=features,
-    _different_columns=["Metadata_plate_name", "Metadata_Well"],
+    _different_columns=["Metadata_plate_well"],
     _same_columns=["Metadata_treatment"],
     _comparator=PearsonsCorrelation(),
 )
@@ -81,7 +82,7 @@ pos_cntrl_pairwise_scores = dmso_pos_cntrl_comparer()
 dmso_neg_cntrl_comparer = PairwiseCompareManager(
     _df=dmso_profiles.loc[dmso_profiles["Metadata_treatment"] == "DMSO-negative"],
     _feat_cols=features,
-    _different_columns=["Metadata_plate_name", "Metadata_Well"],
+    _different_columns=["Metadata_plate_well"],
     _same_columns=["Metadata_treatment"],
     _comparator=PearsonsCorrelation(),
 )
@@ -97,16 +98,26 @@ neg_cntrl_pairwise_scores = dmso_neg_cntrl_comparer()
 final_dmso_pairwise_scores = pd.concat(
     [
         pos_cntrl_pairwise_scores[
-            ["pearsons_correlation", "Metadata_treatment__antehoc_group0"]
+            [
+                "pearsons_correlation",
+                "Metadata_treatment__antehoc_group0",
+                "Metadata_plate_well__posthoc_group0",
+                "Metadata_plate_well__posthoc_group1",
+            ]
         ],
         neg_cntrl_pairwise_scores[
-            ["pearsons_correlation", "Metadata_treatment__antehoc_group0"]
+            [
+                "pearsons_correlation",
+                "Metadata_treatment__antehoc_group0",
+                "Metadata_plate_well__posthoc_group0",
+                "Metadata_plate_well__posthoc_group1",
+            ]
         ],
     ]
 )
 
 # update the columns names
-final_dmso_pairwise_scores.columns = ["pearsons_correlation", "Metadata_treatment"]
+final_dmso_pairwise_scores.columns = ["pearsons_correlation", "Metadata_treatment", "plate_well_0", "plate_well_1"]
 
 # save to csv file
 final_dmso_pairwise_scores.to_csv(
@@ -118,8 +129,8 @@ final_dmso_pairwise_scores.to_csv(
 #
 # In this section of the notebook, we conduct pairwise comparisons across all treatments and specific controls. Two data frames are created:
 #
-# - **`healthy_ref`**: This dataset contains pairwise calculations comparing all treated failing cells to the healthy reference.
-# - **`failing_ref`**: This dataset contains pairwise calculations comparing all treated failing cells to the failing reference.
+# - **healthy_ref**: This dataset contains pairwise calculations comparing all treated failing cells to the healthy reference.
+# - **failing_ref**: This dataset contains pairwise calculations comparing all treated failing cells to the failing reference.
 
 # In[7]:
 
