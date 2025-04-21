@@ -37,7 +37,7 @@ agg_profile = load_profiles(data_path)
 # split the features:
 metadata, features = split_meta_and_features(agg_profile)
 
-# now only select DMSO profiles that are DMSO-positive and DMSO-negative
+# now only select DMSO profiles that are DMSO_positive and DMSO-negative
 dmso_profiles = agg_profile.loc[
     (agg_profile["Metadata_treatment"] == "DMSO-positive")
     | (agg_profile["Metadata_treatment"] == "DMSO-negative")
