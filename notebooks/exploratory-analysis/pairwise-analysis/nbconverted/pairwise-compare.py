@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+# # Comparing controls and treatments using pairwise compare
+#
+# This notebook employs pairwise comparison to quantify the similarity between cellular profiles. In this section, we assess the consistency of experimental replicates and evaluate the similarity between treated wells (containing failing cardiac fibroblast cells) and control wells.
+
 # In[1]:
 
 
@@ -226,10 +230,10 @@ treated_wells_only_df = agg_profile.loc[
 treated_wells_only_df = treated_wells_only_df[["Metadata_plate_name", "Metadata_treatment"] + features]
 
 
-# In[11]:
+# In[ ]:
 
 
-# calculating pairwise correlation between healthy control and treated failing wells
+# calculating the pairwise scores between replicates
 replicate_pairwise_comparer = PairwiseCompareManager(
     _df=treated_wells_only_df,
     _feat_cols=features,
